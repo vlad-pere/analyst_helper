@@ -3,6 +3,7 @@ import UseCaseEditor from './UseCaseEditor';
 import UseCasePreview from './UseCasePreview';
 import Tabs from '../../components/Tabs';
 import Toaster from '../../components/Toaster';
+import HelpPanel from '../../components/HelpPanel';
 import { useUseCaseStore } from './useUseCaseStore';
 import './UseCaseTool.css';
 
@@ -16,6 +17,7 @@ function UseCaseToolPage() {
   } = useUseCaseStore();
 
   const [notification, setNotification] = useState({ message: '', type: 'success', key: 0 });
+  const [isHelpPanelOpen, setIsHelpPanelOpen] = useState(false);
 
   const showNotification = (message, type = 'success') => {
     setNotification(prev => ({ message, type, key: prev.key + 1 }));
@@ -44,12 +46,14 @@ function UseCaseToolPage() {
         onSelectTab={selectTab}
         onAddTab={addTab}
         onDeleteTab={deleteTab}
+        onToggleHelp={() => setIsHelpPanelOpen(!isHelpPanelOpen)}
       />
       <div className="app-container">
         <UseCaseEditor key={activeUseCase.id} useCase={activeUseCase} />
         <UseCasePreview useCase={activeUseCase} onShowNotification={showNotification} />
       </div>
       <Toaster notification={notification} onClear={clearNotification} />
+      <HelpPanel isOpen={isHelpPanelOpen} onClose={() => setIsHelpPanelOpen(false)} />
     </>
   );
 }
