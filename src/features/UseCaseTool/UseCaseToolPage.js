@@ -1,9 +1,8 @@
-// src/features/UseCaseTool/UseCaseToolPage.js
-
-import React from 'react';
+import React, { useState } from 'react';
 import UseCaseEditor from './UseCaseEditor';
 import UseCasePreview from './UseCasePreview';
 import Tabs from '../../components/Tabs';
+import Toaster from '../../components/Toaster';
 import { useUseCaseStore } from './useUseCaseStore';
 import './UseCaseTool.css';
 
@@ -15,6 +14,16 @@ function UseCaseToolPage() {
     selectTab, 
     deleteTab 
   } = useUseCaseStore();
+
+  const [notification, setNotification] = useState({ message: '', type: 'success', key: 0 });
+
+  const showNotification = (message, type = 'success') => {
+    setNotification(prev => ({ message, type, key: prev.key + 1 }));
+  };
+
+  const clearNotification = () => {
+    setNotification(prev => ({ ...prev, message: '' }));
+  };
 
   const activeUseCase = useCases[activeUseCaseIndex];
 
@@ -38,8 +47,9 @@ function UseCaseToolPage() {
       />
       <div className="app-container">
         <UseCaseEditor key={activeUseCase.id} useCase={activeUseCase} />
-        <UseCasePreview useCase={activeUseCase} />
+        <UseCasePreview useCase={activeUseCase} onShowNotification={showNotification} />
       </div>
+      <Toaster notification={notification} onClear={clearNotification} />
     </>
   );
 }

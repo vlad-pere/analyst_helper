@@ -130,3 +130,70 @@
 .validation-list li { padding: 4px 0; }
 .validation-list li.ok { color: #c3e6cb; }
 .validation-list li.error { color: #f5c6cb; }
+
+/* ... (весь ваш предыдущий CSS код) ... */
+
+/* ==========================================================================
+   5. Стили экспорта
+   ========================================================================== */
+
+.export-controls {
+  position: relative;
+  display: inline-block;
+}
+
+.export-button {
+  background-color: var(--body-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.export-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 100;
+  margin-top: 5px;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+}
+
+.export-dropdown button {
+  width: 100%;
+  text-align: left;
+  padding: 10px 15px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.export-dropdown button:hover {
+  background-color: var(--hover-bg);
+}
+
+.export-dropdown-header {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6B778C;
+  text-transform: uppercase;
+  padding: 10px 15px 4px;
+  cursor: default;
+}
+
+.export-dropdown-divider {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 5px 0;
+}

@@ -1,18 +1,15 @@
 import React, { useRef, useState, useMemo } from 'react';
-import ExportControls from './ExportControls';
+import ExportControls from './components/ExportControls';
 import ValidationTooltip from './ValidationTooltip';
 
-// --- МОЗГ ВАЛИДАЦИИ: Функция, которая ищет ошибки ---
 const validateUseCase = (useCase) => {
     const errors = [];
     const mainStepIds = new Set(useCase.mainScenario.map(step => step.id));
 
-    // Проверка обязательных полей
     if (!useCase.purpose?.trim()) errors.push("Поле 'Назначение сценария' не заполнено.");
     if (!useCase.actors?.trim()) errors.push("Поле 'Участники сценария' не заполнено.");
     if (!useCase.successCriteria?.trim()) errors.push("Поле 'Критерии успешности' не заполнено.");
 
-    // Проверка основного сценария
     if (useCase.mainScenario.length === 0) {
         errors.push("Основной сценарий должен содержать хотя бы один шаг.");
     }
@@ -20,7 +17,6 @@ const validateUseCase = (useCase) => {
         if (!step.text?.trim()) errors.push(`Основной сценарий: Шаг ${index + 1} пуст.`);
     });
 
-    // Проверка альтернативных сценариев
     useCase.alternativeScenarios.forEach((sc) => {
         const name = sc.name || 'без названия';
         if (!sc.name?.trim()) errors.push('Альтернативный сценарий: Отсутствует название.');
@@ -33,55 +29,26 @@ const validateUseCase = (useCase) => {
     return errors;
 };
 
-function UseCasePreview({ useCase }) {
+function UseCasePreview({ useCase, onShowNotification }) {
     const previewRef = useRef(null);
-    const validationIndicatorRef = useRef(null); // Ref для иконки-индикатора
-    const [copyButtonText, setCopyButtonText] = useState('Копировать в буфер');
-
-    // Состояния для управления подсказкой через портал
+    const validationIndicatorRef = useRef(null);
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
     const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
     const validationErrors = useMemo(() => validateUseCase(useCase), [useCase]);
 
-    // Обработчики для показа/скрытия подсказки
     const handleMouseEnter = () => {
         if (validationIndicatorRef.current) {
             const rect = validationIndicatorRef.current.getBoundingClientRect();
             setTooltipPosition({
-                top: rect.bottom, // Позиционируем по нижнему краю иконки
-                left: rect.left + rect.width / 2, // Центрируем по горизонтали
+                top: rect.bottom,
+                left: rect.left + rect.width / 2,
             });
         }
         setIsTooltipOpen(true);
     };
 
     const handleMouseLeave = () => setIsTooltipOpen(false);
-
-    const handleCopyToClipboard = async () => {
-        if (!previewRef.current) return;
-        const htmlContent = previewRef.current.outerHTML;
-        try {
-            // ClipboardItem может не поддерживаться во всех браузерах
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            // eslint-disable-next-line no-undef
-            await navigator.clipboard.write([new ClipboardItem({ 'text/html': blob })]);
-            setCopyButtonText('Скопировано!');
-            setTimeout(() => setCopyButtonText('Копировать в буфер'), 2000);
-        } catch (err) {
-            console.warn("Копирование как Rich Text не удалось, пробую как простой текст. Ошибка:", err);
-            try {
-                await navigator.clipboard.writeText(htmlContent);
-                setCopyButtonText('Скопировано!');
-                setTimeout(() => setCopyButtonText('Копировать в буфер'), 2000);
-            } catch (fallbackErr) {
-                console.error('Не удалось скопировать даже как простой текст:', fallbackErr);
-                setCopyButtonText('Ошибка!');
-                setTimeout(() => setCopyButtonText('Копировать в буфер'), 2000);
-                alert("Не удалось скопировать в буфер обмена. Пожалуйста, проверьте консоль на наличие ошибок и разрешения для сайта.");
-            }
-        }
-    };
 
     const renderMultilineText = (text) => text ? text.split('\n').map((line, i) => <React.Fragment key={i}>{line}<br /></React.Fragment>) : null;
 
@@ -109,7 +76,7 @@ function UseCasePreview({ useCase }) {
                         </div>
                     </div>
                 </div>
-                <ExportControls onCopy={handleCopyToClipboard} copyButtonText={copyButtonText} />
+                <ExportControls useCase={useCase} onShowNotification={onShowNotification} />
             </div>
 
             <ValidationTooltip

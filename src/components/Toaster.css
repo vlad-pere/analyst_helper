@@ -1,0 +1,28 @@
+.toaster {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toaster.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toaster.success {
+  background-color: #28a745; /* Зеленый */
+}
+
+.toaster.error {
+  background-color: #dc3545; /* Красный */
+}
