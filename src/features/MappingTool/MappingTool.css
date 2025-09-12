@@ -1,0 +1,506 @@
+/* --- START OF FILE src/features/MappingTool/MappingTool.css --- */
+
+/* src/features/MappingTool/MappingTool.css */
+
+.mapping-tool-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  gap: 15px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.mapping-tool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.mapping-tool-header h1 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.mapping-tool-container {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  min-height: 0;
+}
+
+.json-panel, .mapping-table-panel {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.json-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+.mapping-table-panel {
+  flex-basis: 40%;
+  min-height: 250px;
+  max-height: 500px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.panel-header h3 {
+  margin: 0;
+}
+
+.panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* --- Стили для вкладок --- */
+.tab-navigation {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.tab-button {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background-color: var(--body-bg);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color);
+  position: relative;
+  bottom: -1px;
+}
+
+.tab-button.active {
+  background-color: var(--panel-bg);
+  border-color: var(--border-color);
+  border-bottom: 1px solid var(--panel-bg);
+  font-weight: 600;
+}
+
+.tab-button:not(.active):hover {
+  background-color: #e9effd;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 13px;
+  width: 180px;
+}
+.search-input:focus {
+  outline: none;
+  border-color: #4c9aff;
+  box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.2);
+}
+
+.search-input.mapping-search {
+  width: 250px; 
+}
+
+.panel-header button {
+  background-color: var(--body-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.panel-content {
+  padding: 10px;
+  overflow: auto;
+  flex-grow: 1;
+}
+
+.placeholder-text {
+  color: #6B778C;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* --- Стили для JSON Tree --- */
+.json-tree-view {
+  font-size: 13px;
+}
+
+.json-node {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  user-select: none;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.json-node.is-leaf { cursor: grab; }
+.json-node.has-children { cursor: pointer; }
+.json-node.is-dragging { opacity: 0.5; background-color: #deebff; }
+.json-node.is-over { box-shadow: inset 0 0 0 2px var(--link-color); }
+.json-node.is-mapped { background-color: #e9effd; font-weight: bold; }
+.json-node:not(.is-mapped):hover { background-color: var(--hover-bg); }
+
+.toggle-icon {
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  font-size: 10px;
+  color: #6B778C;
+  visibility: hidden;
+  transition: transform 0.2s ease;
+}
+
+.toggle-icon.visible { visibility: visible; }
+.toggle-icon.expanded { transform: rotate(0deg); }
+.toggle-icon:not(.expanded) { transform: rotate(-90deg); }
+
+.json-key, .json-value-string, .json-value-number, .json-value-boolean {
+  border-radius: 3px;
+  padding: 2px 4px;
+  transition: background-color 0.2s;
+}
+
+.json-node.is-leaf .json-key:hover,
+.json-node.is-leaf .json-value > span:hover,
+.json-node.has-children .json-key:hover {
+   background-color: #dfe1e6;
+   cursor: text;
+}
+
+.editable-input {
+  font-family: inherit;
+  font-size: inherit;
+  padding: 2px 4px;
+  border: 1px solid var(--link-color);
+  border-radius: 3px;
+  outline: none;
+  background-color: white;
+  box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.2);
+}
+
+.editable-span.placeholder {
+  color: #8892a0;
+  font-style: italic;
+}
+
+.json-type { color: #5e6c84; font-style: italic; }
+.json-value-string { color: #d73a49; }
+.json-value-number { color: #0052cc; }
+.json-value-boolean { color: #e36209; }
+.json-value-null { color: #6f42c1; }
+
+.node-actions {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+  background-color: var(--panel-bg);
+  padding: 2px 4px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+.node-actions.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.node-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  color: #5e6c84;
+}
+.node-action-btn:hover {
+  background-color: var(--hover-bg);
+  color: var(--link-color);
+}
+.node-action-btn.delete:hover {
+  background-color: #ffebe6;
+  color: #de350b;
+}
+
+.add-root-node-btn {
+  margin-bottom: 15px; /* --- ИЗМЕНЕНИЕ: Отступ снизу, а не сверху --- */
+  margin-left: 8px;
+  background-color: #fafbfc;
+  border: 1px dashed var(--border-color);
+  color: #5e6c84;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.add-root-node-btn:hover {
+  background-color: var(--hover-bg);
+  border-color: var(--link-color);
+  color: var(--link-color);
+}
+
+
+/* --- Стили для таблицы маппинга --- */
+.mapping-table-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.mapping-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; 
+}
+
+.mapping-table tr.type-mismatch > td {
+  background-color: #ffebe6;
+}
+
+.mapping-table th, .mapping-table td {
+  border: 1px solid var(--border-color);
+  padding: 4px 8px;
+  text-align: left;
+  font-size: 13px;
+  word-break: break-all;
+  transition: background-color 0.3s ease;
+  overflow: hidden; /* Добавляем для обрезки текста */
+  text-overflow: ellipsis; /* Добавляем троеточие */
+}
+
+.mapping-table th {
+  background-color: #fafbfc;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.cell-center {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.meta-input {
+  width: 100%;
+  border: 1px solid transparent;
+  background-color: transparent;
+  padding: 4px;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.meta-input:hover {
+  border-color: var(--border-color);
+}
+
+.meta-input:focus {
+  outline: none;
+  border-color: var(--link-color);
+  background-color: white;
+  box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.2);
+}
+
+.delete-mapping-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #de350b;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.delete-mapping-btn:hover {
+  background-color: #ffebe6;
+}
+
+/* ... (все старые стили остаются без изменений) ... */
+
+/* --- СТИЛИ ДЛЯ РЕДАКТОРА JSON --- */
+.json-editor-panel {
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.json-editor-container {
+  min-height: 100%;
+  background-color: #fafbfc;
+}
+
+.json-editor-error {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 12px;
+  background-color: #ffebe6;
+  color: #bf2600;
+  font-size: 13px;
+  font-family: sans-serif;
+  border-top: 1px solid #ffbdad;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЕЙ РЕЖИМА --- */
+.panel-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 10px 20px;
+}
+.panel-header h3 {
+  margin: 0;
+  grid-column: 1;
+}
+.panel-view-controls {
+  grid-column: 2;
+  display: flex;
+  background-color: var(--body-bg);
+  border-radius: 6px;
+  padding: 3px;
+  border: 1px solid var(--border-color);
+}
+.panel-controls {
+  grid-column: 3;
+  justify-self: end; /* Прижимаем к правому краю */
+}
+
+.view-toggle-btn {
+  padding: 4px 12px;
+  font-size: 13px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #42526E;
+}
+.view-toggle-btn:hover:not(.active):not(:disabled) {
+  background-color: #dfe1e6;
+}
+.view-toggle-btn.active {
+  background-color: var(--panel-bg);
+  color: var(--link-color);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  border-color: var(--border-color);
+}
+.view-toggle-btn:disabled {
+  color: #A5ADBA;
+  cursor: not-allowed;
+}
+
+/* --- СТИЛИ ДЛЯ КНОПОК ИМПОРТА/ЭКСПОРТА --- */
+.import-btn {
+  background-color: var(--body-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.import-btn:hover {
+  background-color: var(--hover-bg);
+}
+
+.export-controls-container {
+  position: relative;
+}
+
+.export-main-btn {
+  background-color: var(--link-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.export-main-btn:hover {
+  background-color: #005fcc;
+}
+
+.export-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease-in-out;
+  font-size: 10px;
+}
+.export-arrow.up {
+  transform: rotate(180deg);
+}
+
+.export-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 5px;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+  width: 180px;
+}
+
+.export-dropdown-menu ul {
+  list-style: none;
+  padding: 5px 0;
+  margin: 0;
+}
+
+.export-dropdown-menu li {
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.export-dropdown-menu li:hover {
+  background-color: var(--hover-bg);
+}

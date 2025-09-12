@@ -1,0 +1,132 @@
+/* --- START OF FILE src/features/UseCaseTool/UseCaseTool.css --- */
+
+/* ==========================================================================
+   1. Основной контейнер (Редактор + Предпросмотр)
+   ========================================================================== */
+
+.app-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  flex-grow: 1;
+  overflow-y: auto; 
+}
+
+.editor-panel, .preview-panel {
+  flex: 1 1 50%;
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  height: fit-content;
+}
+
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 20px; /* Отступ от верха контейнера */
+  max-height: calc(100vh - 40px - 53px); /* Высота вьюпорта минус паддинги и высота табов */
+}
+
+.preview-content-scrollable {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+
+/* ==========================================================================
+   2. Стили формы
+   ========================================================================== */
+
+.form-group { margin-bottom: 20px; }
+.form-group h2 { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 8px; }
+.form-group input[type="text"], .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 14px; background-color: #fafbfc; font-family: inherit; line-height: 1.5; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.form-group textarea { min-height: 90px; resize: vertical; }
+.form-group input[type="text"]:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #4c9aff; background-color: #ffffff; box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.2); }
+.scenario-step { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 5px; border-radius: 4px; background-color: #fafbfc; }
+.scenario-step > span { font-weight: 500; white-space: nowrap; min-width: 60px; }
+.scenario-step input { flex-grow: 1; }
+.drag-handle { display: inline-block; cursor: grab; padding: 0 10px; color: #888; font-size: 20px; line-height: 1; touch-action: none; }
+.delete-step-btn { background: none; border: none; font-size: 24px; color: #6B778C; cursor: pointer; padding: 0 10px; line-height: 1; }
+.add-step-btn { background-color: var(--hover-bg); color: var(--link-color); border: none; border-radius: 4px; padding: 10px 15px; cursor: pointer; font-weight: 600; margin-top: 10px; }
+.alternative-scenario-card { border: 1px solid var(--border-color); border-radius: 8px; margin-top: 20px; background-color: var(--body-bg); }
+.alt-scenario-header { cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+.header-content { display: flex; align-items: center; gap: 10px; }
+.collapse-icon { font-size: 14px; transition: transform 0.2s ease-in-out; }
+.collapse-icon.collapsed { transform: rotate(-90deg); }
+.alt-scenario-body { padding: 0 20px 20px 20px; border-top: 1px solid var(--border-color); }
+.delete-scenario-btn { background-color: #ffebe6; color: #de350b; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer; font-weight: 600; }
+.alt-scenario-links { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+.add-scenario-btn { background-color: #deebff; color: var(--link-color); border: 1px dashed var(--link-color); border-radius: 4px; padding: 10px 15px; cursor: pointer; font-weight: 600; margin-top: 20px; width: 100%; }
+
+
+/* ==========================================================================
+   3. Стили предпросмотра
+   ========================================================================== */
+
+.preview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.preview-header h2 { margin: 0; padding: 0; border: none; }
+.export-controls button { background-color: var(--body-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 4px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+
+.preview-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.preview-table td { border: 1px solid var(--border-color); padding: 12px; vertical-align: top; word-wrap: break-word; }
+.preview-table td:first-child { width: 30%; font-weight: 600; background-color: #fafbfc; }
+.step-number-cell { width: 50px; text-align: left; vertical-align: top; font-weight: 600; background-color: #fafbfc; }
+.scenario-header { background-color: var(--body-bg); font-size: 1.1em; }
+.scenario-link { font-style: italic; color: #5e6c84; font-size: 0.9em; margin-top: 5px; display: block; }
+.scenario-link.return-link { margin-top: 15px; font-weight: bold; }
+
+
+/* ==========================================================================
+   4. Прочее (Состояния, Валидация)
+   ========================================================================== */
+
+.empty-state { text-align: center; padding-top: 100px; }
+
+.header-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.validation-container {
+  position: relative;
+}
+
+.validation-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: help;
+  transition: transform 0.2s;
+}
+
+.validation-indicator.ok { background-color: #36b37e; }
+.validation-indicator.error { background-color: #de350b; }
+
+.validation-tooltip {
+  position: fixed; 
+  background-color: var(--text-color);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  width: max-content;
+  max-width: 400px;
+  z-index: 1000;
+  pointer-events: none; 
+  transform: translate(-50%, 10px); 
+}
+
+.validation-list { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+.validation-list li { padding: 4px 0; }
+.validation-list li.ok { color: #c3e6cb; }
+.validation-list li.error { color: #f5c6cb; }

@@ -1,0 +1,110 @@
+/* --- START OF FILE src/App.css --- */
+
+/* ==========================================================================
+   1. Глобальные стили и переменные
+   ========================================================================== */
+
+:root {
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 60px;
+  --border-color: #dfe1e6;
+  --panel-bg: #ffffff;
+  --body-bg: #f4f5f7;
+  --text-color: #172B4D;
+  --link-color: #0052cc;
+  --hover-bg: #e9effd; /* Светло-голубой для hover-эффектов */
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--body-bg);
+  margin: 0;
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+
+/* ==========================================================================
+   2. Основная структура приложения (Сайдбар + Контент)
+   ========================================================================== */
+
+.app-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-width: 0; 
+}
+
+
+/* ==========================================================================
+   3. Сайдбар (Боковое меню)
+   ========================================================================== */
+
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--panel-bg);
+  color: var(--text-color);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.3s ease-in-out;
+  overflow-x: hidden;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+.sidebar-header { padding: 20px; font-size: 1.2em; font-weight: 600; white-space: nowrap; color: var(--link-color); }
+.sidebar-menu { list-style: none; padding: 0; margin: 0; }
+
+.sidebar-menu a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.menu-item { display: flex; align-items: center; padding: 15px 20px; cursor: pointer; white-space: nowrap; }
+.menu-item:hover { background-color: var(--body-bg); }
+.menu-item.active { 
+  background-color: var(--hover-bg);
+  color: var(--link-color);
+  font-weight: 600; 
+}
+.menu-icon { font-size: 1.2em; margin-right: 15px; min-width: 20px; text-align: center; }
+.sidebar.collapsed .menu-text { opacity: 0; width: 0; visibility: hidden; }
+.menu-text { transition: opacity 0.2s, width 0.2s; opacity: 1; }
+.sidebar-toggle { margin-top: auto; border-top: 1px solid var(--border-color); display: flex; align-items: center; padding: 15px 20px; cursor: pointer; white-space: nowrap; }
+.sidebar-toggle:hover { background-color: var(--body-bg); }
+
+
+/* ==========================================================================
+   4. Вкладки (Общий компонент Tabs)
+   ========================================================================== */
+
+.tabs-container {
+  display: flex;
+  padding: 10px 20px 0 20px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0; 
+}
+
+.tab { display: flex; align-items: center; padding: 10px 15px; border: 1px solid var(--border-color); border-bottom: none; border-radius: 6px 6px 0 0; background-color: var(--body-bg); cursor: pointer; margin-right: -1px; position: relative; max-width: 200px; }
+.tab span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab.active { background-color: var(--panel-bg); z-index: 2; margin-bottom: -1px; }
+.close-tab-btn { background: none; border: none; font-size: 18px; color: #6B778C; cursor: pointer; margin-left: 10px; padding: 0; line-height: 1; }
+.add-tab-btn { background: none; border: none; font-size: 24px; color: #6B778C; cursor: pointer; padding: 5px 15px; line-height: 1; }
