@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './Modals.css';
+import Modal from '../../../ui-kit/Modal/Modal';
+import Button from '../../../ui-kit/Button/Button';
+import Input from '../../../ui-kit/Input/Input';
 
 function SaveTemplateModal({ isOpen, onClose, onSave, currentName }) {
   const [templateName, setTemplateName] = useState(currentName);
@@ -10,35 +12,33 @@ function SaveTemplateModal({ isOpen, onClose, onSave, currentName }) {
     }
   }, [isOpen, currentName]);
 
-  if (!isOpen) return null;
-
   const handleSave = () => {
     if (templateName.trim()) {
       onSave(templateName.trim());
     }
   };
 
+  const footer = (
+    <>
+      <Button variant="secondary" onClick={onClose}>Отмена</Button>
+      <Button variant="primary" onClick={handleSave} disabled={!templateName.trim()}>Сохранить</Button>
+    </>
+  );
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Сохранить как шаблон</h2>
-        <p>Введите имя для нового шаблона. Это имя будет отображаться в списке при создании нового сценария.</p>
-        <div className="form-group">
-          <label htmlFor="templateName">Имя шаблона</label>
-          <input
-            type="text"
-            id="templateName"
-            value={templateName}
-            onChange={(e) => setTemplateName(e.target.value)}
-            autoFocus
-          />
-        </div>
-        <div className="modal-actions">
-          <button className="button-secondary" onClick={onClose}>Отмена</button>
-          <button className="button-primary" onClick={handleSave} disabled={!templateName.trim()}>Сохранить</button>
-        </div>
+    <Modal isOpen={isOpen} onClose={onClose} title="Сохранить как шаблон" footer={footer}>
+      <p>Введите имя для нового шаблона. Это имя будет отображаться в списке при создании нового сценария.</p>
+      <div className="form-group">
+        <label htmlFor="templateName">Имя шаблона</label>
+        <Input
+          type="text"
+          id="templateName"
+          value={templateName}
+          onChange={(e) => setTemplateName(e.target.value)}
+          autoFocus
+        />
       </div>
-    </div>
+    </Modal>
   );
 }
 

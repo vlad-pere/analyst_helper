@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#portal-root, #tooltip-root, #toaster-root {
+  position: relative;
+  z-index: 9999;
+}
+
+/* Добавляем это правило в конец файла */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}

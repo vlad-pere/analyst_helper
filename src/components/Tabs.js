@@ -68,7 +68,7 @@ const SearchTabsDropdown = React.forwardRef(({ isOpen, items, onSelect, position
 
 
 // --- Основной компонент Tabs ---
-function Tabs({ items, templates, activeIndex, onSelectTab, onAddTab, onDeleteTab, onToggleHelp, onSaveAsTemplate, onManageTemplates }) {
+function Tabs({ items, templates, activeIndex, onSelectTab, onAddTab, onDeleteTab, onToggleHelp, onSaveAsTemplate, onManageTemplates, onBulkExport }) {
   const [isAddMenuOpen, setAddMenuOpen] = useState(false);
   const [addMenuPosition, setAddMenuPosition] = useState({ top: 0, left: 0 });
   const [isSearchOpen, setSearchOpen] = useState(false);
@@ -124,7 +124,6 @@ function Tabs({ items, templates, activeIndex, onSelectTab, onAddTab, onDeleteTa
   const handleScroll = (direction) => {
     const el = scrollContainerRef.current;
     if (!el) return;
-    // Прокручиваем на 80% видимой ширины для эффекта "постраничной" прокрутки
     const amount = el.clientWidth * 0.8;
     el.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
   };
@@ -199,6 +198,9 @@ function Tabs({ items, templates, activeIndex, onSelectTab, onAddTab, onDeleteTa
         <div className="tabs-controls">
            <button className="control-btn" title="Поиск" ref={searchButtonRef} onClick={() => toggleMenu('search')}>
              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+           </button>
+           <button className="control-btn" title="Сборный экспорт" onClick={onBulkExport}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1 2a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm1 2h11a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm1 3h11a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/></svg>
            </button>
           <button className="control-btn" title="Сохранить как шаблон" onClick={onSaveAsTemplate}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.72-2.58a.5.5 0 0 1 .56 0L13 14.566V2a1 1 0 0 0-1-1H4z"/><path d="M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z"/></svg>

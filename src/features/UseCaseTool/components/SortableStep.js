@@ -1,8 +1,7 @@
-// --- START OF FILE src/features/UseCaseTool/components/SortableStep.js ---
-
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import Input from '../../../ui-kit/Input/Input';
 
 function SortableStep({ step, index, onStepChange, onDeleteStep }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: step.id });
@@ -12,7 +11,7 @@ function SortableStep({ step, index, onStepChange, onDeleteStep }) {
     <div className="scenario-step" ref={setNodeRef} style={style} {...attributes}>
       <span className="drag-handle" {...listeners}>&#x2630;</span>
       <span>Шаг {index + 1}:</span>
-      <input type="text" value={step.text} onChange={(e) => onStepChange(step.id, e.target.value)} />
+      <Input type="text" value={step.text} onChange={(e) => onStepChange(step.id, e.target.value)} />
       <button className="delete-step-btn" onClick={() => onDeleteStep(step.id)}>&times;</button>
     </div>
   );

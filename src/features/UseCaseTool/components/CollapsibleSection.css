@@ -1,0 +1,54 @@
+.collapsible-section .collapsible-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 8px;
+}
+
+.collapsible-section .collapsible-header label {
+  font-weight: 600;
+  margin-bottom: 0; /* Override default form-group label margin */
+  cursor: pointer;
+}
+
+.collapsible-icon {
+  transition: transform 0.2s ease-in-out;
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+
+.collapsible-icon.collapsed {
+  transform: rotate(-90deg);
+}
+
+.collapsible-content {
+  padding-left: 24px; /* Отступ, чтобы контент был под текстом заголовка */
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.completeness-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.completeness-indicator.complete {
+  background-color: #36b37e; /* Зеленый */
+}
+
+.completeness-indicator.incomplete {
+  background-color: var(--color-border-primary); /* Серый */
+}

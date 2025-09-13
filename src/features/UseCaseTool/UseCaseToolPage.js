@@ -6,6 +6,7 @@ import Toaster from '../../components/Toaster';
 import HelpPanel from '../../components/HelpPanel';
 import SaveTemplateModal from './components/SaveTemplateModal';
 import ManageTemplatesModal from './components/ManageTemplatesModal';
+import BulkExportModal from './components/BulkExportModal'; // <-- Импорт
 import { useUseCaseStore } from './useUseCaseStore';
 import './UseCaseTool.css';
 
@@ -24,6 +25,7 @@ function UseCaseToolPage() {
   const [isHelpPanelOpen, setIsHelpPanelOpen] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isManageModalOpen, setIsManageModalOpen] = useState(false);
+  const [isBulkExportModalOpen, setIsBulkExportModalOpen] = useState(false); // <-- Состояние
 
   const showNotification = (message, type = 'success') => {
     setNotification(prev => ({ message, type, key: prev.key + 1 }));
@@ -62,6 +64,7 @@ function UseCaseToolPage() {
         onToggleHelp={() => setIsHelpPanelOpen(true)}
         onSaveAsTemplate={() => setIsSaveModalOpen(true)}
         onManageTemplates={() => setIsManageModalOpen(true)}
+        onBulkExport={() => setIsBulkExportModalOpen(true)} // <-- Пропс
       />
       <div className="app-container">
         <UseCaseEditor key={activeUseCase.id} useCase={activeUseCase} />
@@ -78,6 +81,10 @@ function UseCaseToolPage() {
       <ManageTemplatesModal
         isOpen={isManageModalOpen}
         onClose={() => setIsManageModalOpen(false)}
+      />
+      <BulkExportModal
+        isOpen={isBulkExportModalOpen}
+        onClose={() => setIsBulkExportModalOpen(false)}
       />
     </div>
   );

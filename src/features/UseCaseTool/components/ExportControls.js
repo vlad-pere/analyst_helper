@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { exportService } from '../services/exportService';
+import Button from '../../../ui-kit/Button/Button';
 
 function ExportControls({ useCase, onShowNotification }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,9 +51,9 @@ function ExportControls({ useCase, onShowNotification }) {
 
   return (
     <div className="export-controls" ref={dropdownRef}>
-      <button className="export-button" onClick={() => setIsOpen(!isOpen)}>
+      <Button onClick={() => setIsOpen(!isOpen)}>
         Экспорт ▾
-      </button>
+      </Button>
       {isOpen && (
         <div className="export-dropdown">
           <div className="export-dropdown-header">Копировать в буфер</div>
