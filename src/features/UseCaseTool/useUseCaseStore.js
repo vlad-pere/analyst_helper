@@ -1,31 +1,57 @@
-// --- START OF FILE src/features/UseCaseTool/useUseCaseStore.js ---
-
 import { create } from 'zustand';
 import { produce } from 'immer';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { arrayMove } from '@dnd-kit/sortable';
+import { v4 as uuidv4 } from 'uuid';
 
 const createNewUseCase = () => ({
-  id: `uc-${Date.now()}`,
+  id: `uc-${uuidv4()}`,
   purpose: "Новый сценарий использования",
   preconditions: "",
   actors: "",
-  mainScenario: [{ id: `main-${Date.now()}`, text: "" }],
+  mainScenario: [{ id: `main-${uuidv4()}`, text: "" }],
   alternativeScenarios: [],
   postconditions: "",
   successCriteria: "",
 });
+
+const cloneUseCaseAsNew = (useCaseData) => {
+  const newUseCase = JSON.parse(JSON.stringify(useCaseData));
+  
+  newUseCase.id = `uc-${uuidv4()}`;
+  newUseCase.mainScenario.forEach(step => {
+    step.id = `main-${uuidv4()}`;
+  });
+  newUseCase.alternativeScenarios.forEach(scenario => {
+    scenario.id = `alt-scenario-${uuidv4()}`;
+    scenario.steps.forEach(step => {
+      step.id = `alt-step-${uuidv4()}`;
+    });
+  });
+  return newUseCase;
+};
 
 export const useUseCaseStore = create(
   persist(
     (set, get) => ({
       useCases: [createNewUseCase()],
       activeUseCaseIndex: 0,
+      templates: [],
 
       // --- ACTIONS ---
 
-      addTab: () => set(produce(draft => {
-        const newUseCase = createNewUseCase();
+      addTab: (templateId = null) => set(produce(draft => {
+        let newUseCase;
+        if (templateId) {
+          const template = draft.templates.find(t => t.id === templateId);
+          if (template) {
+            newUseCase = cloneUseCaseAsNew(template.data);
+          } else {
+            newUseCase = createNewUseCase(); // Fallback
+          }
+        } else {
+          newUseCase = createNewUseCase();
+        }
         draft.useCases.push(newUseCase);
         draft.activeUseCaseIndex = draft.useCases.length - 1;
       })),
@@ -49,6 +75,29 @@ export const useUseCaseStore = create(
           draft.activeUseCaseIndex = draft.useCases.length - 1;
         }
       })),
+      
+      // --- TEMPLATE ACTIONS ---
+      saveAsTemplate: (name) => set(produce(draft => {
+        const activeUseCase = draft.useCases[draft.activeUseCaseIndex];
+        if (activeUseCase) {
+          draft.templates.push({
+            id: `tpl-${uuidv4()}`,
+            name,
+            data: activeUseCase
+          });
+        }
+      })),
+
+      updateTemplate: (id, newName) => set(produce(draft => {
+        const template = draft.templates.find(t => t.id === id);
+        if (template) {
+          template.name = newName;
+        }
+      })),
+
+      deleteTemplate: (id) => set(produce(draft => {
+        draft.templates = draft.templates.filter(t => t.id !== id);
+      })),
 
       // --- ACTIONS FOR ACTIVE USE CASE ---
 
@@ -62,7 +111,7 @@ export const useUseCaseStore = create(
       addMainStep: () => set(produce(draft => {
         const activeUseCase = draft.useCases[draft.activeUseCaseIndex];
         if (activeUseCase) {
-          activeUseCase.mainScenario.push({ id: `main-${Date.now()}`, text: "" });
+          activeUseCase.mainScenario.push({ id: `main-${uuidv4()}`, text: "" });
         }
       })),
       
@@ -98,7 +147,7 @@ export const useUseCaseStore = create(
         const activeUseCase = draft.useCases[draft.activeUseCaseIndex];
         if (activeUseCase) {
           activeUseCase.alternativeScenarios.push({
-            id: `alt-scenario-${Date.now()}`,
+            id: `alt-scenario-${uuidv4()}`,
             name: "Новый альтернативный сценарий",
             startsAtStepId: null,
             returnsToStepId: null,
@@ -126,7 +175,7 @@ export const useUseCaseStore = create(
         const activeUseCase = draft.useCases[draft.activeUseCaseIndex];
         if (activeUseCase) {
           const scenario = activeUseCase.alternativeScenarios.find(sc => sc.id === scenarioId);
-          if (scenario) scenario.steps.push({ id: `alt-step-${Date.now()}`, text: "" });
+          if (scenario) scenario.steps.push({ id: `alt-step-${uuidv4()}`, text: "" });
         }
       })),
 
@@ -166,7 +215,7 @@ export const useUseCaseStore = create(
       },
     }),
     {
-      name: 'use-case-builder-session', // ключ в localStorage
+      name: 'use-case-builder-session',
       storage: createJSONStorage(() => localStorage),
     }
   )

@@ -31,24 +31,9 @@ const validateUseCase = (useCase) => {
 
 function UseCasePreview({ useCase, onShowNotification }) {
     const previewRef = useRef(null);
-    const validationIndicatorRef = useRef(null);
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-    const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
-
+    
     const validationErrors = useMemo(() => validateUseCase(useCase), [useCase]);
-
-    const handleMouseEnter = () => {
-        if (validationIndicatorRef.current) {
-            const rect = validationIndicatorRef.current.getBoundingClientRect();
-            setTooltipPosition({
-                top: rect.bottom,
-                left: rect.left + rect.width / 2,
-            });
-        }
-        setIsTooltipOpen(true);
-    };
-
-    const handleMouseLeave = () => setIsTooltipOpen(false);
 
     const renderMultilineText = (text) => text ? text.split('\n').map((line, i) => <React.Fragment key={i}>{line}<br /></React.Fragment>) : null;
 
@@ -67,23 +52,20 @@ function UseCasePreview({ useCase, onShowNotification }) {
                     <h2>Документация</h2>
                     <div
                         className="validation-container"
-                        ref={validationIndicatorRef}
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
+                        onMouseEnter={() => setIsTooltipOpen(true)}
+                        onMouseLeave={() => setIsTooltipOpen(false)}
                     >
                         <div className={`validation-indicator ${validationErrors.length > 0 ? 'error' : 'ok'}`}>
                             {validationErrors.length > 0 ? validationErrors.length : '✓'}
                         </div>
+                        <ValidationTooltip
+                            isOpen={isTooltipOpen}
+                            errors={validationErrors}
+                        />
                     </div>
                 </div>
                 <ExportControls useCase={useCase} onShowNotification={onShowNotification} />
             </div>
-
-            <ValidationTooltip
-                isOpen={isTooltipOpen}
-                errors={validationErrors}
-                position={tooltipPosition}
-            />
 
             <div className="preview-content-scrollable">
                 <div ref={previewRef}>

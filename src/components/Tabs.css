@@ -1,125 +1,168 @@
 .tabs-container {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline; /* <-- Изменено с flex-end на baseline */
-  padding: 0 20px;
+  align-items: center;
+  padding: 5px 10px;
   background-color: var(--body-bg);
   border-bottom: 1px solid var(--border-color);
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  min-height: 43px; 
 }
 
-.tabs {
+.tabs-wrapper {
+  flex: 1 1 auto;
   display: flex;
-  flex: 1;
-  min-width: 0;
-  overflow-x: auto;
-  padding-top: 10px;
   align-items: center;
-  padding-bottom: 4px; /* <-- Добавлено для пространства под скроллбаром */
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Стилизация скроллбара для Webkit-браузеров (Chrome, Safari) */
-.tabs::-webkit-scrollbar {
-  height: 6px;
-}
-
-.tabs::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tabs::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 10px;
+.tabs-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .tab {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 15px;
+  padding: 8px 12px;
   cursor: pointer;
-  border: 1px solid var(--border-color);
-  border-bottom: none;
-  border-radius: 6px 6px 0 0;
-  position: relative;
-  bottom: -1px;
-  background-color: var(--hover-bg);
-  max-width: 250px;
+  border: 1px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-radius: 4px 4px 0 0;
   white-space: nowrap;
+  flex-shrink: 0;
+  max-width: 220px;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-right: 4px;
-  flex-shrink: 0;
+  margin-right: 2px;
 }
 
-.tab:hover {
-  background-color: #e9ecef;
-}
-
-.tab.active {
-  background-color: var(--panel-bg);
-  border-bottom: 1px solid var(--panel-bg);
-  font-weight: 500;
+.tab:hover { background-color: var(--hover-bg); }
+.tab.active { 
+  background-color: var(--panel-bg); 
+  border-color: var(--border-color);
+  border-bottom-color: #0052cc; 
+  font-weight: 500; 
 }
 
 .close-tab-btn {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  color: #6B778C;
-  padding: 0 5px;
-  border-radius: 50%;
-  line-height: 1;
+  background: none; border: none; font-size: 18px; cursor: pointer; color: #6B778C;
+  padding: 0 4px; border-radius: 50%; line-height: 1;
 }
+.close-tab-btn:hover { background-color: #dfe1e6; color: #172B4D; }
 
-.close-tab-btn:hover {
-  background-color: #dfe1e6;
-  color: #172B4D;
+.add-tab-wrapper {
+  flex-shrink: 0;
+  margin-left: 2px; /* Отступ от последней вкладки, если inline */
+}
+.add-tab-wrapper.fixed {
+  margin-left: 8px; /* Отступ от скролл-кнопок, если fixed */
 }
 
 .add-tab-btn {
-  background: none;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-color);
-  margin-left: 8px;
-  position: relative;
-  bottom: -1px;
-  flex-shrink: 0;
+  background: none; border: none; border-radius: 50%; width: 28px; height: 28px;
+  font-size: 20px; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; color: var(--text-color);
 }
-
-.add-tab-btn:hover {
-  background-color: var(--hover-bg);
-}
+.add-tab-btn:hover { background-color: var(--hover-bg); }
 
 .tabs-controls {
   display: flex;
-  gap: 10px;
-  padding-bottom: 5px;
+  gap: 8px;
+  margin-left: 12px;
+  border-left: 1px solid var(--border-color);
+  padding-left: 12px;
 }
 
-.help-btn {
-  background-color: var(--hover-bg);
+.control-btn {
+  background-color: transparent; border: 1px solid transparent; border-radius: 4px;
+  width: 32px; height: 32px; font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; color: var(--text-color);
+}
+.control-btn:hover { background-color: var(--hover-bg); }
+.control-btn svg { vertical-align: middle; }
+
+.scroll-btn {
+  flex-shrink: 0;
+  background-color: var(--body-bg);
   border: 1px solid var(--border-color);
-  border-radius: 4px;
-  width: 32px;
-  height: 32px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+  font-size: 18px;
+  line-height: 1;
   color: var(--text-color);
 }
+.scroll-btn.left { margin-right: 5px; }
+.scroll-btn.right { margin-left: 5px; }
+.scroll-btn:hover { background-color: var(--hover-bg); }
 
-.help-btn:hover {
-  border-color: #a7b0be;
+.dropdown-menu {
+  position: fixed; 
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+  min-width: 250px;
+}
+
+.dropdown-menu button {
+  width: 100%; text-align: left; padding: 10px 15px; border: none;
+  background-color: transparent; cursor: pointer; font-size: 14px;
+}
+.dropdown-menu button:hover { background-color: var(--hover-bg); }
+.dropdown-menu hr { border: none; border-top: 1px solid var(--border-color); margin: 5px 0; }
+.dropdown-menu .menu-header { font-size: 11px; font-weight: 600; color: #6B778C; text-transform: uppercase; padding: 10px 15px 4px; cursor: default; }
+.dropdown-menu .menu-placeholder { font-size: 13px; color: #6B778C; font-style: italic; padding: 10px 15px; }
+
+.search-tabs-dropdown {
+  right: 10px;
+}
+.search-tabs-dropdown input {
+  width: calc(100% - 20px);
+  margin: 5px 10px 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+}
+.search-tabs-dropdown input:focus {
+  outline: none;
+  border-color: #4c9aff;
+  box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.2);
+}
+.search-results-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.search-results-list li {
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-results-list li:hover {
+  background-color: var(--hover-bg);
+}
+.search-results-list li.no-results {
+  color: #6B778C;
+  font-style: italic;
+  cursor: default;
 }

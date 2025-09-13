@@ -1,7 +1,15 @@
-/* --- START OF FILE src/features/UseCaseTool/UseCaseTool.css --- */
+/* ==========================================================================
+   1. Общая структура страницы
+   ========================================================================== */
+
+.use-case-tool-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 53px); /* 53px - примерная высота сайдбара/шапки */
+}
 
 /* ==========================================================================
-   1. Основной контейнер (Редактор + Предпросмотр)
+   2. Основной контейнер (Редактор + Предпросмотр)
    ========================================================================== */
 
 .app-container {
@@ -9,7 +17,9 @@
   gap: 20px;
   padding: 20px;
   flex-grow: 1;
-  overflow-y: auto; 
+  overflow-y: auto;
+  position: relative; /* Создаем контекст наложения */
+  z-index: 1;        /* Устанавливаем его ниже табов */
 }
 
 .editor-panel, .preview-panel {
@@ -36,7 +46,7 @@
 
 
 /* ==========================================================================
-   2. Стили формы
+   3. Стили формы
    ========================================================================== */
 
 .form-group { margin-bottom: 20px; }
@@ -63,12 +73,11 @@
 
 
 /* ==========================================================================
-   3. Стили предпросмотра
+   4. Стили предпросмотра
    ========================================================================== */
 
 .preview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .preview-header h2 { margin: 0; padding: 0; border: none; }
-.export-controls button { background-color: var(--body-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 4px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
 
 .preview-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .preview-table td { border: 1px solid var(--border-color); padding: 12px; vertical-align: top; word-wrap: break-word; }
@@ -80,7 +89,7 @@
 
 
 /* ==========================================================================
-   4. Прочее (Состояния, Валидация)
+   5. Прочее (Состояния, Валидация)
    ========================================================================== */
 
 .empty-state { text-align: center; padding-top: 100px; }
@@ -113,7 +122,10 @@
 .validation-indicator.error { background-color: #de350b; }
 
 .validation-tooltip {
-  position: fixed; 
+  position: absolute;
+  top: calc(100% + 10px); /* Позиционируем под индикатором с отступом */
+  left: 50%;
+  transform: translateX(-50%);
   background-color: var(--text-color);
   color: white;
   padding: 10px 15px;
@@ -122,8 +134,7 @@
   width: max-content;
   max-width: 400px;
   z-index: 1000;
-  pointer-events: none; 
-  transform: translate(-50%, 10px); 
+  pointer-events: none;
 }
 
 .validation-list { list-style: none; padding: 0; margin: 0; font-size: 13px; }
@@ -131,10 +142,8 @@
 .validation-list li.ok { color: #c3e6cb; }
 .validation-list li.error { color: #f5c6cb; }
 
-/* ... (весь ваш предыдущий CSS код) ... */
-
 /* ==========================================================================
-   5. Стили экспорта
+   6. Стили экспорта
    ========================================================================== */
 
 .export-controls {
